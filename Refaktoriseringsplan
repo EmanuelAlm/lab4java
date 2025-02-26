@@ -1,0 +1,51 @@
+Brott mot designprinciper
+Car controller använder alla subpaket individuellt och leder till high coupling mellan fordonsklassen och det grafiska gränssnittet. I det grafiska gränssnittet så har vi usage åt båda hållen i CarController och CarView
+Bryter mot OpenClosed principle
+
+CarController bryter mot DIP, kopplad till varje specifikt fordon
+
+
+
+Ansvarsområden
+
+VehicleFunctionality - funktionalitet för fordon
+
+Saab95 - implementera Saab95
+
+Volvo240 - implementera Volvo240
+
+Scania - implementera Scania
+
+VolvoFM7 - implemeterna VolvoFM7
+
+AllModellWorkshop - funktionalitet för verkstad
+
+CarController
+- lyssnar på CarView (knapparna)
+- modifierar modellens status och uppdaterar CarView (actionPerformed)
+- innehåller modellen (main & funktionaliteten, gas, brake etc)
+
+CarView
+- Grafik och funktionalitet till modellen
+
+DrawPanel
+- Hanterar animation och bilderna på fordonen
+
+Anledningar att förändras:
+- Vill animera fler fordon (CarController och DrawPanel)
+- Vill skapa nya fordon (CarController och DrawPanel)
+- Vill animera andra objekt (DrawPanel, CarController, CarView)
+- Vill inför ny funktionalitet för fordon(CarView, CarController)
+
+
+TODO Göra en modellklass och flytta modellfunktionaliteten från CarController till dit
+TODO Kolla på DrawPanel och dess beroende till alla bilklasser osv
+
+Refaktoriseringsplan:
+
+1. Skapa en Model klass som flyttar ut modellfunktionaliteten från CarController (för att enbart inneha ansvarsområdet att hålla modellen) (SRP)
+2. Gör en ny klass VehicleFactory som skapar instanser av subpaketen (Saab95, Volvo240 etc) genom att kalla på deras konstruktorer. (och ha metoder som createSaab95 etc)
+3. Använd VehicleFactory för att skapa nya instanser av subklasserna i den nya Model klassen istället för att direkt kalla på de specifika subklasserna (DIP)
+ (för att minska antalet kopplingspunkter och koppla Grafikmodellen till ett mer abstrakt gränssnitt)
+4. Få bort kopplingarna mellan DrawPanels moveit metod och de specifika subpaketen (Volvo240, Saab95, Scania) för att göra metoden mer generell för alla bilar samt ha beroenden på en mer abstrakt implementation (DIP)
+5. Skapa ett Controller Interface för att få bort cirkulära kopplingen mellan carController och carView. carView har ref till denna interface
