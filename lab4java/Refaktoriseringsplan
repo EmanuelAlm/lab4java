@@ -1,0 +1,32 @@
+Uppgift 2:
+Vilka avvikelser från MVC-idealet kan ni identifiera i det ursprungliga användargränssnittet?
+Vad borde ha gjorts smartare, dummare eller tunnare?
+- Controller innehöll logik, ska göras dummare
+- Controller innehöll även värden och instanser som hör till modellen
+- Controller och View hade cirkulärt beroende
+- Det fanns ingen modell
+- View inehöll actionlisteners som lyssnar på användarens input
+
+Vilka av dessa brister åtgärdade ni med er nya design från del 3? Hur då? Vilka brister åtgärdade ni inte?
+- Allihopa
+- Vi skapade en ny modell som innehåller all logik och instanser relevanta
+- Vi skapade en applikation som kopplade ihop de olika delarna
+- Vi gjorde ett interface för att modellen ska kunna skicka ut signaler till okända (dvs därmed ej kopplade) funktioner vid uppdatering
+- Vi flyttade actionlisteners från View till Controller
+- Vi tog bort cirkulärt beroende mellan controller och viewer
+
+Uppgift 3:
+Finns det något ställe i er design där ni redan använder detta pattern, avsiktligt eller oavsiktligt? Vilka designproblem löste ni genom att använda det?
+- Factory Pattern:
+    I modellen när vi skapar bilarna (löste DIP problemet i modellen där vi var beroende av konkreta implementationerna av bilarna)
+
+- Observer Pattern:
+    I interfacet ModelUpdateListener & modellen skickar ut signaler via denna (har då ingen koppling till View)
+
+- Composite Pattern
+    I DrawPanel (metoden PaintComponent) behandlar vi listan av bilar som om det vore en och samma bil. Även i ActionListener i Model
+
+Finns det något ställe där ni kan förbättra er design genom att använda detta design pattern? Vilka designproblem skulle ni lösa genom att använda det? Om inte, varför skulle er design inte förbättras av att använda det?
+
+- State pattern
+    Kan  implementeras för TruckBed för att begränsa att tillståndet för truckbed är konsekvent och att användare ej kan definiera helt egna tillstånd eller ändra, vilket ökar robustheten i programmet
